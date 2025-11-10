@@ -30,8 +30,11 @@ jobs:
           pip install -r reboundx/requirements.txt || echo "no reboundx requirements"
           pip install numpy matplotlib pandas
 
-      - name: Build REBOUND package
-        run: pip install ./rebound
+      - name: Build REBOUND package from source
+        run: |
+    pip uninstall -y rebound || true
+    git clone https://github.com/dtamayo/rebound.git rebound-src
+    pip install -e ./rebound-src
 
       - name: Build REBOUNDx package
         run: pip install --no-build-isolation -e ./reboundx -v
