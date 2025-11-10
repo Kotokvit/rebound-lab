@@ -1,0 +1,29 @@
+name: Rebound validation
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - "scripts/**"
+      - ".github/workflows/**"
+      - "requirements.txt"
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Install Python deps
+        run: pip install -r requirements.txt
+      - name: Install rebound from this repo
+        run: pip install .
+      - name: Run orbit integration
+        run: python scripts/run_orbits.py --years 2000 --dt 0.0005 --out artifacts
+      - name: Tidal grid
+        run: python scripts/tides_scan.py --out artifacts
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: rebound-validation
+          path: artifacts/**
