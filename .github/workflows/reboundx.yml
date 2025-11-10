@@ -51,10 +51,16 @@ jobs:
       - name: Run Cassiopeia Simulation
         run: |
           mkdir -p artifacts
-          if [ -f scripts/run_orbits.py ]; then
-            python scripts/run_orbits.py --years 2000 --dt 0.0005 --out artifacts || echo "Simulation finished with warnings"
+          python scripts/run_orbits.py --years 2000 --dt 0.0005 --out artifacts || echo "Simulation finished with warnings"
+
+      - name: Show Simulation Summary
+        if: always()
+        run: |
+          if [ -f artifacts/summary.json ]; then
+            echo "===== Simulation summary ====="
+            cat artifacts/summary.json
           else
-            echo "Simulation script not found!"
+            echo "No summary.json found — simulation likely failed."
           fi
 
       - name: Archive Simulation Results
