@@ -4,14 +4,8 @@ on: [push, pull_request, workflow_dispatch]
 
 jobs:
   build:
-    name: Python tests on ${{ matrix.os }} (${{ matrix.python-version }})
+    runs-on: ubuntu-latest
     timeout-minutes: 20
-    runs-on: ${{ matrix.os }}
-
-    strategy:
-      matrix:
-        python-version: ["3.11", "3.12"]
-        os: [ubuntu-latest, macos-latest]
 
     steps:
       - uses: actions/checkout@v4
@@ -23,10 +17,10 @@ jobs:
           repository: dtamayo/reboundx
           path: reboundx
 
-      - name: Set up Python ${{ matrix.python-version }}
+      - name: Set up Python
         uses: actions/setup-python@v5
         with:
-          python-version: ${{ matrix.python-version }}
+          python-version: "3.11"
 
       - name: Install dependencies
         run: |
@@ -48,7 +42,6 @@ jobs:
           python -m unittest discover -s reboundx/test/ -v
           cd ..
 
-      # === Cassiopeia Simulation ===
       - name: Run Cassiopeia Simulation
         run: |
           mkdir -p artifacts
