@@ -48,7 +48,7 @@ jobs:
           python -m unittest discover -s reboundx/test/ -v
           cd ..
 
-      # 👇 ДОБАВЛЕННЫЙ БЛОК СИМУЛЯЦИИ
+      # === Cassiopeia Simulation ===
       - name: Run Cassiopeia Simulation
         run: |
           mkdir -p artifacts
@@ -62,7 +62,3 @@ jobs:
         with:
           name: Cassiopeia-simulation
           path: Cassiopeia-system.zip
-
-        run: |
-          cd reboundx
-          python -m unittest discover -s reboundx/test/ -v
